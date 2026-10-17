@@ -19,8 +19,6 @@ body {
   flex-direction: column;
 }
 
-main { flex: 1; padding: 30px 5%; }
-
 /* College bar */
 .college-bar {
   background: var(--primary-dark);
@@ -84,40 +82,18 @@ main { flex: 1; padding: 30px 5%; }
   margin-left: 4px;
 }
 
-/* Hero */
-.hero {
-  text-align: center;
-  padding: 70px 20px;
-  background: linear-gradient(135deg, var(--primary), #14b8a6);
-  color: #fff;
-  border-radius: 16px;
-  margin-bottom: 30px;
-}
-.hero h1 { font-size: 2.4rem; margin-bottom: 10px; }
-.hero p { font-size: 1.1rem; margin-bottom: 20px; }
-
-/* Buttons */
-.btn {
-  background: var(--accent);
-  color: #fff;
-  border: none;
-  padding: 9px 18px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.95rem;
-  text-decoration: none;
-  display: inline-block;
-}
-.btn:hover { opacity: 0.88; }
-
-.section-title { margin: 25px 0 15px; color: var(--primary-dark); }
-
-/* ---------- Home page layout (sidebar + middle) ---------- */
-.home-layout {
+/* ---------- Page layout: sidebar on every page ---------- */
+.page-layout {
+  flex: 1;
   display: grid;
   grid-template-columns: 240px 1fr;
   gap: 28px;
   align-items: start;
+  padding: 30px 5%;
+}
+.page-layout main {
+  padding: 0;
+  min-width: 0;
 }
 
 /* Left sidebar */
@@ -153,13 +129,30 @@ main { flex: 1; padding: 30px 5%; }
   font-size: 1.05rem;
   transition: all 0.2s;
 }
-.branch-tile:hover {
+.branch-tile:hover,
+.branch-tile.active {
   background: var(--primary);
   color: #fff;
   transform: translateX(5px);
 }
 
-/* Middle description */
+/* Buttons */
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn:hover { opacity: 0.88; }
+
+.section-title { margin: 0 0 15px; color: var(--primary-dark); }
+
+/* Home: middle description */
 .about {
   background: var(--card);
   border-radius: 14px;
@@ -202,7 +195,7 @@ main { flex: 1; padding: 30px 5%; }
 /* Book cards */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 20px;
 }
 .card {
@@ -245,7 +238,7 @@ th { background: var(--primary); color: #fff; }
 /* Forms */
 .form-box {
   max-width: 420px;
-  margin: 30px auto;
+  margin: 10px auto;
   background: var(--card);
   padding: 30px;
   border-radius: 14px;
@@ -289,7 +282,6 @@ th { background: var(--primary); color: #fff; }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 800px) {
-  .home-layout { grid-template-columns: 1fr; }
+  .page-layout { grid-template-columns: 1fr; }
   .sidebar { position: static; }
-  .hero h1 { font-size: 2.2rem; }
 }
