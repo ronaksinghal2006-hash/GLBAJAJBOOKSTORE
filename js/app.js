@@ -1,10 +1,10 @@
 /* ---------- Layout (header + footer) ---------- */
 const NAV = [
   ["index.html", "Home"],
-  ["catalogue.html", "Catalogue"],
-  ["cart.html", "Cart"],
   ["login.html", "Login"],
-  ["registration.html", "Register"]
+  ["registration.html", "Register"],
+  ["catalogue.html", "Catalogue"],
+  ["cart.html", "Cart"]
 ];
 
 function renderLayout() {
