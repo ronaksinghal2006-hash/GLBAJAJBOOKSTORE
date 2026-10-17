@@ -30,7 +30,7 @@ function renderLayout() {
 
   if (footer) footer.innerHTML = `
     <div class="footer">
-      <p><strong>GLB INSTITUTE OF TECHNOLOGY AND MANAGEMENT</strong></p>
+      <p><strong>GL BAJAJ INSTITUTE OF TECHNOLOGY AND MANAGEMENT</strong></p>
       <p>Name: Ronak &nbsp;|&nbsp; Roll No: 2501920110313</p>
       <p>GitHub: <a href="https://github.com/ronaksinghal2006-hash" target="_blank">github.com/ronaksinghal2006-hash</a></p>
     </div>`;
