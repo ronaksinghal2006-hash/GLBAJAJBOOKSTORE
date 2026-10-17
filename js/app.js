@@ -38,6 +38,36 @@ function renderLayout() {
   updateBadge();
 }
 
+/* ---------- Sidebar (Shop by Branch) on every page ---------- */
+function renderSidebar() {
+  const main = document.querySelector("main");
+  if (!main) return;
+
+  const page = location.pathname.split("/").pop() || "index.html";
+  const branches = [
+    ["cse.html", "💻 CSE"],
+    ["ece.html", "📡 ECE"],
+    ["eee.html", "⚡ EEE"],
+    ["civil.html", "🏗️ CIVIL"]
+  ];
+  const tiles = branches.map(([href, label]) =>
+    `<a href="${href}" class="branch-tile ${page === href ? "active" : ""}">${label}</a>`
+  ).join("");
+
+  const wrap = document.createElement("div");
+  wrap.className = "page-layout";
+
+  const aside = document.createElement("aside");
+  aside.className = "sidebar";
+  aside.innerHTML = `
+    <h2 class="side-title">Shop by Branch</h2>
+    <div class="branches">${tiles}</div>`;
+
+  main.parentNode.insertBefore(wrap, main);
+  wrap.appendChild(aside);
+  wrap.appendChild(main);
+}
+
 /* ---------- Cart ---------- */
 const getCart = () => JSON.parse(localStorage.getItem("cart") || "[]");
 
@@ -217,6 +247,7 @@ function initForms() {
 /* ---------- Start ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   renderLayout();
+  renderSidebar();
   initBookPages();
   renderCart();
   initForms();
