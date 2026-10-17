@@ -1,223 +1,307 @@
-/* ---------- Layout (header + footer) ---------- */
-const NAV = [
-  ["index.html", "Home"],
-  ["login.html", "Login"],
-  ["registration.html", "Registration"],
-  ["catalogue.html", "Catalogue"],
-  ["cart.html", "Cart"]
-];
-
-function renderLayout() {
-  const page = location.pathname.split("/").pop() || "index.html";
-  const links = NAV.map(([href, label]) => {
-    const active = page === href ? "active" : "";
-    const badge = label === "Cart" ? `<span class="badge" id="cart-count">0</span>` : "";
-    return `<a href="${href}" class="${active}">${label}${badge}</a>`;
-  }).join("");
-
-  const header = document.getElementById("site-header");
-  const footer = document.getElementById("site-footer");
-
-  if (header) header.innerHTML = `
-    <div class="college-bar">GL BAJAJ INSTITUTE OF TECHNOLOGY AND MANAGEMENT</div>
-    <div class="header">
-      <a href="index.html" class="logo">
-        <img src="images/logo.png" alt="GL Bajaj Logo">
-        <span class="logo-text">GL <span>BAJAJ</span> BOOKSTORE</span>
-      </a>
-      <nav class="nav">${links}</nav>
-    </div>`;
-
-  if (footer) footer.innerHTML = `
-    <div class="footer">
-      <p><strong>GL BAJAJ INSTITUTE OF TECHNOLOGY AND MANAGEMENT</strong></p>
-      <p>Name: Ronak &nbsp;|&nbsp; Roll No: 2501920110313</p>
-      <p>GitHub: <a href="https://github.com/ronaksinghal2006-hash" target="_blank">github.com/ronaksinghal2006-hash</a></p>
-    </div>`;
-
-  updateBadge();
+:root {
+  --primary: #0f766e;
+  --primary-dark: #115e59;
+  --accent: #f97316;
+  --bg: #f0fdfa;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
 }
 
-/* ---------- Cart ---------- */
-const getCart = () => JSON.parse(localStorage.getItem("cart") || "[]");
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-function saveCart(cart) {
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateBadge();
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-function updateBadge() {
-  const el = document.getElementById("cart-count");
-  if (el) el.textContent = getCart().reduce((sum, i) => sum + i.qty, 0);
+main { flex: 1; padding: 30px 5%; }
+
+/* College bar */
+.college-bar {
+  background: var(--primary-dark);
+  color: #fff;
+  text-align: center;
+  padding: 8px;
+  font-size: 0.85rem;
+  letter-spacing: 1.5px;
+  font-weight: 600;
 }
 
-function addToCart(id) {
-  const cart = getCart();
-  const item = cart.find(i => i.id === id);
-  item ? item.qty++ : cart.push({ id, qty: 1 });
-  saveCart(cart);
-  toast("Added to cart ✔");
+/* Header */
+.header {
+  background: var(--primary);
+  color: #fff;
+  padding: 14px 5%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-function changeQty(id, delta) {
-  let cart = getCart();
-  const item = cart.find(i => i.id === id);
-  if (!item) return;
-  item.qty += delta;
-  if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
-  saveCart(cart);
-  renderCart();
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.logo img {
+  height: 45px;
+  width: auto;
+  background: #fff;
+  padding: 3px;
+  border-radius: 8px;
+}
+.logo-text span { color: var(--accent); }
+
+/* Navigation */
+.nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.95rem;
+}
+.nav a:hover, .nav a.active { background: var(--primary-dark); }
+.badge {
+  background: var(--accent);
+  border-radius: 10px;
+  padding: 1px 7px;
+  font-size: 0.75rem;
+  margin-left: 4px;
 }
 
-function removeItem(id) {
-  saveCart(getCart().filter(i => i.id !== id));
-  renderCart();
+/* Buttons */
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 9px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn:hover { opacity: 0.88; }
+.btn-small {
+  padding: 7px 18px;
+  font-size: 0.85rem;
+  border-radius: 20px;
 }
 
-function toast(text) {
-  const t = document.createElement("div");
-  t.className = "toast";
-  t.textContent = text;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 1500);
+.section-title { margin: 25px 0 15px; color: var(--primary-dark); }
+
+/* ---------- Home page layout (sidebar + middle) ---------- */
+.home-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 28px;
+  align-items: start;
 }
 
-/* ---------- Books display ---------- */
-function bookCard(b) {
-  return `
-    <div class="card">
-      <div class="cover">${b.icon}</div>
-      <h3>${b.title}</h3>
-      <p class="author">by ${b.author}</p>
-      <span class="tag">${b.branch.toUpperCase()}</span>
-      <div class="row">
-        <span class="price">₹${b.price}</span>
-        <button class="btn" onclick="addToCart(${b.id})">Add</button>
-      </div>
-    </div>`;
+/* Left sidebar */
+.sidebar {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 90px;
+}
+.side-title {
+  color: var(--primary-dark);
+  font-size: 1.1rem;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--accent);
+}
+.branches {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.branch-tile {
+  background: var(--bg);
+  border-left: 5px solid var(--accent);
+  border-radius: 8px;
+  padding: 14px 16px;
+  text-align: left;
+  text-decoration: none;
+  color: var(--primary-dark);
+  font-weight: 700;
+  font-size: 1.05rem;
+  transition: all 0.2s;
+}
+.branch-tile:hover {
+  background: var(--primary);
+  color: #fff;
+  transform: translateX(5px);
 }
 
-function renderBooks(list) {
-  const grid = document.getElementById("book-grid");
-  if (!grid) return;
-  grid.innerHTML = list.length ? list.map(bookCard).join("") : "<p>No books found.</p>";
+/* Middle panel */
+.about {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 35px 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  text-align: center;
+}
+.about h2 { color: var(--primary-dark); font-size: 1.9rem; margin-bottom: 10px; }
+.tagline {
+  color: var(--muted);
+  font-size: 1.1rem;
+  font-style: italic;
+  margin-bottom: 20px;
 }
 
-function initBookPages() {
-  const grid = document.getElementById("book-grid");
-  if (!grid) return;
-
-  const branch = document.body.dataset.branch;
-  if (branch) {
-    renderBooks(BOOKS.filter(b => b.branch === branch));
-    return;
-  }
-
-  const search = document.getElementById("search");
-  const filter = document.getElementById("filter");
-  const apply = () => {
-    const q = search.value.toLowerCase();
-    const f = filter.value;
-    renderBooks(BOOKS.filter(b =>
-      (f === "all" || b.branch === f) &&
-      (b.title.toLowerCase().includes(q) || b.author.toLowerCase().includes(q))
-    ));
-  };
-  search.addEventListener("input", apply);
-  filter.addEventListener("change", apply);
-  apply();
+.quote-box {
+  background: var(--bg);
+  border-left: 5px solid var(--accent);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin: 28px auto;
+  max-width: 560px;
+  text-align: left;
+}
+.quote-box p {
+  line-height: 1.6;
+  margin: 8px 0;
+  color: var(--primary-dark);
+  font-weight: 600;
 }
 
-/* ---------- Cart page ---------- */
-function renderCart() {
-  const box = document.getElementById("cart-box");
-  if (!box) return;
-  const cart = getCart();
-  if (!cart.length) {
-    box.innerHTML = "<p>Your cart is empty. <a href='catalogue.html'>Browse books</a></p>";
-    return;
-  }
-  let total = 0;
-  const rows = cart.map(item => {
-    const b = BOOKS.find(x => x.id === item.id);
-    const sub = b.price * item.qty;
-    total += sub;
-    return `
-      <tr>
-        <td>${b.icon} ${b.title}</td>
-        <td>₹${b.price}</td>
-        <td class="qty">
-          <button onclick="changeQty(${b.id}, -1)">−</button>
-          <span>${item.qty}</span>
-          <button onclick="changeQty(${b.id}, 1)">+</button>
-        </td>
-        <td>₹${sub}</td>
-        <td><button class="btn" onclick="removeItem(${b.id})">Remove</button></td>
-      </tr>`;
-  }).join("");
-  box.innerHTML = `
-    <table>
-      <tr><th>Book</th><th>Price</th><th>Qty</th><th>Subtotal</th><th></th></tr>
-      ${rows}
-    </table>
-    <p class="total">Total: ₹${total}</p>
-    <div style="text-align:right;margin-top:15px">
-      <button class="btn" onclick="checkout()">Checkout</button>
-    </div>`;
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+  margin-top: 10px;
+}
+.feature {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 18px;
+  border-top: 4px solid var(--primary);
+  text-align: center;
+}
+.f-icon { font-size: 1.8rem; }
+.feature h3 { margin: 8px 0 6px; font-size: 1.05rem; color: var(--primary-dark); }
+.feature p { font-size: 0.92rem; color: var(--muted); line-height: 1.5; }
+
+/* Toolbar */
+.toolbar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.toolbar input, .toolbar select {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.toolbar input { flex: 1; min-width: 200px; }
+
+/* Book cards */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+.card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cover {
+  background: linear-gradient(135deg, #99f6e4, #5eead4);
+  font-size: 3rem;
+  text-align: center;
+  padding: 25px 0;
+  border-radius: 8px;
+}
+.card h3 { font-size: 1.05rem; }
+.author { color: var(--muted); font-size: 0.9rem; }
+.tag {
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+  align-self: flex-start;
+}
+.row { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+.price { font-weight: 700; color: var(--primary-dark); font-size: 1.1rem; }
+
+/* Cart */
+table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: 12px; overflow: hidden; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+th { background: var(--primary); color: #fff; }
+.qty button { width: 28px; height: 28px; border: none; background: var(--primary); color: #fff; border-radius: 6px; cursor: pointer; }
+.qty span { margin: 0 8px; }
+.total { text-align: right; font-size: 1.3rem; margin-top: 20px; font-weight: 700; }
+
+/* Forms */
+.form-box {
+  max-width: 420px;
+  margin: 30px auto;
+  background: var(--card);
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+.form-box h2 { margin-bottom: 18px; color: var(--primary-dark); }
+.form-box input {
+  width: 100%;
+  padding: 11px;
+  margin-bottom: 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.form-box .btn { width: 100%; }
+.msg { margin-top: 12px; font-size: 0.95rem; }
+
+/* Footer */
+.footer {
+  background: var(--primary-dark);
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+}
+.footer p { margin: 4px 0; }
+.footer a { color: var(--accent); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  background: var(--accent);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 8px;
+  z-index: 99;
 }
 
-function checkout() {
-  alert("Order placed successfully! 🎉");
-  saveCart([]);
-  renderCart();
+/* ---------- Mobile ---------- */
+@media (max-width: 800px) {
+  .home-layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .about h2 { font-size: 1.5rem; }
 }
-
-/* ---------- Login / Register (demo only, localStorage) ---------- */
-function initForms() {
-  const reg = document.getElementById("register-form");
-  if (reg) reg.addEventListener("submit", e => {
-    e.preventDefault();
-    const name = reg.name.value.trim();
-    const email = reg.email.value.trim().toLowerCase();
-    const password = reg.password.value;
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-    const msg = document.getElementById("msg");
-    if (users.some(u => u.email === email)) {
-      msg.textContent = "Email already registered.";
-      msg.style.color = "red";
-      return;
-    }
-    users.push({ name, email, password });
-    localStorage.setItem("users", JSON.stringify(users));
-    msg.textContent = "Registered! Redirecting to login...";
-    msg.style.color = "green";
-    setTimeout(() => location.href = "login.html", 1200);
-  });
-
-  const login = document.getElementById("login-form");
-  if (login) login.addEventListener("submit", e => {
-    e.preventDefault();
-    const email = login.email.value.trim().toLowerCase();
-    const password = login.password.value;
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-    const user = users.find(u => u.email === email && u.password === password);
-    const msg = document.getElementById("msg");
-    if (user) {
-      localStorage.setItem("currentUser", user.name);
-      msg.textContent = `Welcome back, ${user.name}!`;
-      msg.style.color = "green";
-      setTimeout(() => location.href = "catalogue.html", 1000);
-    } else {
-      msg.textContent = "Invalid email or password.";
-      msg.style.color = "red";
-    }
-  });
-}
-
-/* ---------- Start ---------- */
-document.addEventListener("DOMContentLoaded", () => {
-  renderLayout();
-  initBookPages();
-  renderCart();
-  initForms();
-});
