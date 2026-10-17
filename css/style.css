@@ -110,12 +110,14 @@ main { flex: 1; padding: 30px 5%; }
 }
 .btn:hover { opacity: 0.88; }
 
-/* Branch tiles */
+/* Shop by Branch (VERTICAL) */
 .section-title { margin: 25px 0 15px; color: var(--primary-dark); }
 .branches {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 18px;
+  max-width: 500px;
+  margin: 0 auto;
 }
 .branch-tile {
   background: var(--card);
