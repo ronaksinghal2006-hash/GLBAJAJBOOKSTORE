@@ -291,5 +291,5 @@ th { background: var(--primary); color: #fff; }
 @media (max-width: 800px) {
   .home-layout { grid-template-columns: 1fr; }
   .sidebar { position: static; }
-  .hero h1 { font-size: 1.8rem; }
+  .hero h1 { font-size: 2.2rem; }
 }
