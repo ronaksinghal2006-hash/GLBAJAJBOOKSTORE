@@ -110,29 +110,84 @@ main { flex: 1; padding: 30px 5%; }
 }
 .btn:hover { opacity: 0.88; }
 
-/* Shop by Branch (VERTICAL) */
 .section-title { margin: 25px 0 15px; color: var(--primary-dark); }
+
+/* ---------- Home page layout (sidebar + middle) ---------- */
+.home-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 28px;
+  align-items: start;
+}
+
+/* Left sidebar */
+.sidebar {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 90px;
+}
+.side-title {
+  color: var(--primary-dark);
+  font-size: 1.1rem;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--accent);
+}
 .branches {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  max-width: 500px;
-  margin: 0 auto;
+  gap: 10px;
 }
 .branch-tile {
-  background: var(--card);
-  border-top: 5px solid var(--accent);
-  border-radius: 12px;
-  padding: 30px 20px;
-  text-align: center;
+  background: var(--bg);
+  border-left: 5px solid var(--accent);
+  border-radius: 8px;
+  padding: 14px 16px;
+  text-align: left;
   text-decoration: none;
   color: var(--primary-dark);
   font-weight: 700;
-  font-size: 1.2rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  transition: transform 0.2s;
+  font-size: 1.05rem;
+  transition: all 0.2s;
 }
-.branch-tile:hover { transform: translateY(-5px); }
+.branch-tile:hover {
+  background: var(--primary);
+  color: #fff;
+  transform: translateX(5px);
+}
+
+/* Middle description */
+.about {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.about h2 { color: var(--primary-dark); margin-bottom: 14px; }
+.about > p { line-height: 1.7; color: var(--text); margin-bottom: 22px; }
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-bottom: 26px;
+}
+.feature {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 18px;
+  border-top: 4px solid var(--primary);
+}
+.f-icon { font-size: 1.8rem; }
+.feature h3 { margin: 8px 0 6px; font-size: 1.05rem; color: var(--primary-dark); }
+.feature p { font-size: 0.92rem; color: var(--muted); line-height: 1.5; }
+
+.how-title { color: var(--primary-dark); margin-bottom: 10px; }
+.steps { margin: 0 0 24px 22px; line-height: 1.9; }
+.steps a { color: var(--primary); font-weight: 600; }
 
 /* Toolbar */
 .toolbar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -230,4 +285,11 @@ th { background: var(--primary); color: #fff; }
   padding: 12px 20px;
   border-radius: 8px;
   z-index: 99;
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 800px) {
+  .home-layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .hero h1 { font-size: 1.8rem; }
 }
