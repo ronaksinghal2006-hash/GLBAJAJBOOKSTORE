@@ -1,21 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GL Bajaj Bookstore | ECE Books</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECE Books | GL Bajaj Bookstore</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        body { background-color: #f0fdf4; color: #0f172a; display: flex; flex-direction: column; min-height: 100vh; }
+        .top-bar { background-color: #0f3d38; color: #ffffff; text-align: center; padding: 9px; font-size: 13px; font-weight: bold; }
+        .header { background-color: #114b43; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; border-bottom: 1px solid rgba(255,255,255,0.15); }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-area img { width: 45px; height: 45px; object-fit: contain; background: white; border-radius: 50%; padding: 3px; }
+        .logo-area h1 { color: #ffffff; font-size: 21px; font-weight: bold; }
+        .logo-area h1 span { color: #fb923c; }
+        .nav-links { display: flex; align-items: center; gap: 25px; }
+        .nav-links a { color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+        .nav-links a:hover { color: #fb923c; }
+        .nav-links a.active { background-color: #0b3832; padding: 6px 14px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .cart-badge { background-color: #f97316; color: white; padding: 2px 7px; border-radius: 10px; font-size: 12px; margin-left: 4px; font-weight: bold; }
+        
+        .main-wrapper { display: flex; flex: 1; padding: 30px 40px; gap: 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
+        .sidebar { width: 260px; background: #ffffff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); height: fit-content; border: 1px solid #cbd5e1; }
+        .sidebar h3 { font-size: 16px; color: #0f3d38; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #f97316; font-weight: bold; }
+        .branch-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 15px; margin-bottom: 8px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; text-decoration: none; color: #0f172a; font-weight: 700; font-size: 14px; }
+        .branch-btn:hover, .branch-btn.active-branch { background: #0f3d38; color: white; border-color: #0f3d38; }
+
+        .content-area { flex: 1; background: #ffffff; border-radius: 16px; padding: 35px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #cbd5e1; }
+        .content-area h2 { font-size: 22px; color: #0f3d38; margin-bottom: 25px; font-weight: bold; }
+
+        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .book-card { border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; background: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.03); display: flex; flex-direction: column; }
+        .book-img-box { background: #ccfbf1; height: 130px; display: flex; justify-content: center; align-items: center; font-size: 40px; border-bottom: 1px solid #cbd5e1; }
+        .book-info { padding: 15px; display: flex; flex-direction: column; flex: 1; }
+        .book-title { font-size: 15px; font-weight: bold; color: #0f172a; margin-bottom: 4px; }
+        .book-author { font-size: 12.5px; color: #475569; margin-bottom: 10px; font-weight: 600; }
+        .book-meta { display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 10px; border-top: 1px solid #e2e8f0; }
+        .branch-tag { background: #0f3d38; color: white; font-size: 10px; padding: 3px 8px; border-radius: 4px; font-weight: bold; text-transform: uppercase; }
+        .book-price { font-size: 16.5px; font-weight: bold; color: #0f3d38; }
+        .btn-add { background-color: #f97316; color: white; border: none; padding: 6px 14px; font-size: 13px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+        .btn-add:hover { background-color: #ea580c; }
+
+        .footer { background-color: #114b43; color: #ffffff; text-align: center; padding: 20px; font-size: 13.5px; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.15); font-weight: 500; }
+        .footer p { margin: 4px 0; }
+        .footer a { color: #fb923c; text-decoration: none; font-weight: bold; }
+        .footer a:hover { text-decoration: underline; }
+    </style>
 </head>
-<body data-branch="ece">
-  <div id="site-header"></div>
+<body>
 
-  <main>
-    <h2 class="section-title">ECE Books</h2>
-    <div class="grid" id="book-grid"></div>
-  </main>
+    <div class="top-bar">GL BAJAJ INSTITUTE OF TECHNOLOGY AND MANAGEMENT</div>
 
-  <div id="site-footer"></div>
-  <script src="js/data.js"></script>
-  <script src="js/app.js"></script>
+    <header class="header">
+        <div class="logo-area">
+            <img src="logo.jpg" alt="Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'40\' height=\'40\' fill=\'%23f97316\'/><text x=\'5\' y=\'26\' fill=\'white\' font-size=\'16\' font-weight=\'bold\'>GLB</text></svg>'">
+            <h1>GL <span>BAJAJ</span> BOOKSTORE</h1>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+            <a href="catalogue.html">Catalogue</a>
+            <a href="cart.html">Cart <span class="cart-badge" id="cartCount">0</span></a>
+        </nav>
+    </header>
+
+    <div class="main-wrapper">
+        <aside class="sidebar">
+            <h3>Shop by Branch</h3>
+            <a href="cse.html" class="branch-btn">💻 CSE</a>
+            <a href="ece.html" class="branch-btn active-branch">🔬 ECE</a>
+            <a href="eee.html" class="branch-btn">⚡ EEE</a>
+            <a href="civil.html" class="branch-btn">🏗️ CIVIL</a>
+        </aside>
+
+        <main class="content-area">
+            <h2>Electronics & Communication Engineering Books</h2>
+            <div class="books-grid" id="branchBooksGrid"></div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>GL BAJAJ INSTITUTE OF TECHNOLOGY AND MANAGEMENT</p>
+        <p>Name: Ronak | Roll No: 2501920110313</p>
+        <p>GitHub: <a href="https://github.com/ronaksinghal2006-hash" target="_blank">github.com/ronaksinghal2006-hash</a></p>
+    </footer>
+
+    <script src="branch-catalogue.js"></script>
+    <script>
+        renderBranchBooks('ece');
+    </script>
 </body>
 </html>
