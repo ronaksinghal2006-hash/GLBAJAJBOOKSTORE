@@ -6,43 +6,36 @@
     <title>Cart | GL Bajaj Bookstore</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        body { background-color: #f0fdf4; color: #1f2937; display: flex; flex-direction: column; min-height: 100vh; }
-        .top-bar { background-color: #114b43; color: white; text-align: center; padding: 8px; font-size: 13px; font-weight: bold; }
-        .header { background-color: #114b43; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        body { background-color: #f0fdf4; color: #0f172a; display: flex; flex-direction: column; min-height: 100vh; }
+        .top-bar { background-color: #0f3d38; color: #ffffff; text-align: center; padding: 9px; font-size: 13px; font-weight: bold; }
+        .header { background-color: #114b43; display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; border-bottom: 1px solid rgba(255,255,255,0.15); }
         .logo-area { display: flex; align-items: center; gap: 15px; }
-        .logo-area img { width: 45px; height: 45px; object-fit: contain; background: white; border-radius: 50%; padding: 3px; }
-        .logo-area h1 { color: white; font-size: 20px; font-weight: bold; }
-        .logo-area h1 span { color: #f97316; }
+        .logo-area img { width: 55px; height: 55px; object-fit: contain; border-radius: 8px; background: white; padding: 4px; }
+        .logo-area h1 { color: #ffffff; font-size: 21px; font-weight: bold; }
+        .logo-area h1 span { color: #fb923c; }
         .nav-links { display: flex; align-items: center; gap: 25px; }
-        .nav-links a { color: white; text-decoration: none; font-size: 15px; font-weight: 500; }
-        .nav-links a:hover { color: #f97316; }
+        .nav-links a { color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; }
+        .nav-links a:hover { color: #fb923c; }
         .nav-links a.active { background-color: #0b3832; padding: 6px 14px; border-radius: 20px; }
-        .cart-badge { background-color: #f97316; color: white; padding: 2px 7px; border-radius: 10px; font-size: 12px; margin-left: 4px; }
+        .cart-badge { background-color: #f97316; color: white; padding: 2px 7px; border-radius: 10px; font-size: 12px; margin-left: 4px; font-weight: bold; }
         .main-wrapper { display: flex; flex: 1; padding: 30px 40px; gap: 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
-        .sidebar { width: 260px; background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); height: fit-content; border: 1px solid #e2e8f0; }
-        .sidebar h3 { font-size: 16px; color: #114b43; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #f97316; }
-        .branch-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 15px; margin-bottom: 8px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; text-decoration: none; color: #1e293b; font-weight: 600; font-size: 14px; }
-        .branch-btn:hover { background: #f1f5f9; }
-
-        .content-area { flex: 1; background: white; border-radius: 16px; padding: 35px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        .content-area h2 { font-size: 22px; color: #114b43; margin-bottom: 20px; font-weight: bold; }
-        
-        .empty-cart { font-size: 15px; color: #64748b; }
-        .empty-cart a { color: #2563eb; text-decoration: underline; }
-
-        .footer { background-color: #114b43; color: white; text-align: center; padding: 20px; font-size: 13px; margin-top: auto; border-top: 1px solid rgba(255,255,255,0.1); }
+        .content-area { flex: 1; background: #ffffff; border-radius: 16px; padding: 35px; border: 1px solid #cbd5e1; }
+        table { width: 100%; border-collapse: collapse; background: white; margin-top: 15px; }
+        th, td { border: 1px solid #cbd5e1; padding: 12px; text-align: center; }
+        th { background-color: #e2e8f0; color: #0f172a; }
+        .checkout-box { margin-top: 25px; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 20px; border-radius: 10px; border: 1px solid #cbd5e1; }
+        .btn-checkout { background-color: #f97316; color: white; border: none; padding: 12px 24px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 15px; }
+        .btn-checkout:hover { background-color: #ea580c; }
+        .footer { background-color: #114b43; color: #ffffff; text-align: center; padding: 20px; font-size: 13.5px; margin-top: auto; font-weight: 500; }
         .footer p { margin: 4px 0; }
-        .footer a { color: #f97316; text-decoration: none; }
-        .footer a:hover { text-decoration: underline; }
+        .footer a { color: #fb923c; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
-
     <div class="top-bar">GL BAJAJ INSTITUTE OF TECHNOLOGY AND MANAGEMENT</div>
-
     <header class="header">
         <div class="logo-area">
-            <img src="logo.jpg" alt="Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'><rect width=\'40\' height=\'40\' fill=\'%23f97316\'/><text x=\'5\' y=\'26\' fill=\'white\' font-size=\'16\' font-weight=\'bold\'>GLB</text></svg>'">
+            <img src="images/logo.png" alt="GL Bajaj Logo">
             <h1>GL <span>BAJAJ</span> BOOKSTORE</h1>
         </div>
         <nav class="nav-links">
@@ -53,65 +46,86 @@
             <a href="cart.html" class="active">Cart <span class="cart-badge" id="cartCount">0</span></a>
         </nav>
     </header>
-
     <div class="main-wrapper">
-        <aside class="sidebar">
-            <h3>Shop by Branch</h3>
-            <a href="cse.html" class="branch-btn">💻 CSE</a>
-            <a href="ece.html" class="branch-btn">🔬 ECE</a>
-            <a href="eee.html" class="branch-btn">⚡ EEE</a>
-            <a href="civil.html" class="branch-btn">🏗️ CIVIL</a>
-        </aside>
-
         <main class="content-area">
-            <h2>Your Cart 🛒</h2>
-            <div id="cartContent">
-                <p class="empty-cart">Your cart is empty. <a href="catalogue.html">Browse books</a></p>
+            <h2>Your Shopping Cart 🛒</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Book Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="cartRows"></tbody>
+            </table>
+            <div class="checkout-box" id="checkoutSection" style="display: none;">
+                <h3 id="grandTotal">Total Amount: ₹0</h3>
+                <button class="btn-checkout" onclick="alert('Order placed successfully!'); localStorage.removeItem('bookstoreCart'); location.reload();">Proceed to Checkout</button>
             </div>
         </main>
     </div>
-
     <footer class="footer">
         <p>GL BAJAJ INSTITUTE OF TECHNOLOGY AND MANAGEMENT</p>
         <p>Name: Ronak | Roll No: 2501920110313</p>
-        <p>GitHub: <a href="https://github.com/ronaksinghal2006-hash" target="_blank">github.com/ronaksinghal2006-hash</a></p>
+        <p>GitHub: <a href="https://github.com/ronaksinghal2006-hash" target="_blank">github.com/ronaksinghal2006-hash/GLBAJAJBOOKSTORE</a></p>
     </footer>
 
     <script>
         function loadCart() {
             const cart = JSON.parse(localStorage.getItem('bookstoreCart') || '{}');
-            const items = Object.values(cart);
-            const container = document.getElementById('cartContent');
-            const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('cartCount').textContent = totalItems;
+            const tbody = document.getElementById('cartRows');
+            const checkoutSection = document.getElementById('checkoutSection');
+            const grandTotalEl = document.getElementById('grandTotal');
+            tbody.innerHTML = '';
 
-            if (items.length === 0) {
-                container.innerHTML = `<p class="empty-cart">Your cart is empty. <a href="catalogue.html">Browse books</a></p>`;
+            let keys = Object.keys(cart);
+            if (keys.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #64748b; padding: 20px;">Your cart is empty.</td></tr>';
+                checkoutSection.style.display = 'none';
+                updateCartCount();
                 return;
             }
 
-            let html = `<table style="width:100%; border-collapse:collapse; margin-bottom:20px;">
-                <tr style="background:#f8fafc; text-align:left; border-bottom:2px solid #e2e8f0;">
-                    <th style="padding:10px;">Book</th>
-                    <th style="padding:10px;">Price</th>
-                    <th style="padding:10px;">Quantity</th>
-                    <th style="padding:10px;">Total</th>
-                </tr>`;
-            
-            let grandTotal = 0;
-            items.forEach(item => {
-                grandTotal += item.price * item.quantity;
-                html += `<tr style="border-bottom:1px solid #e2e8f0;">
-                    <td style="padding:12px 10px;">${item.name}</td>
-                    <td style="padding:12px 10px;">₹${item.price}</td>
-                    <td style="padding:12px 10px;">${item.quantity}</td>
-                    <td style="padding:12px 10px;">₹${item.price * item.quantity}</td>
-                </tr>`;
+            let totalAmount = 0;
+            keys.forEach(key => {
+                let item = cart[key];
+                let itemTotal = item.price * item.quantity;
+                totalAmount += itemTotal;
+
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><b>${item.name}</b></td>
+                    <td>₹${item.price}</td>
+                    <td>${item.quantity}</td>
+                    <td>₹${itemTotal}</td>
+                    <td><button style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;" onclick="removeItem('${key}')">Remove</button></td>
+                `;
+                tbody.appendChild(row);
             });
-            html += `</table><h3 style="text-align:right; color:#114b43;">Grand Total: ₹${grandTotal}</h3>`;
-            container.innerHTML = html;
+
+            grandTotalEl.innerText = `Total Amount: ₹${totalAmount}`;
+            checkoutSection.style.display = 'flex';
+            updateCartCount();
         }
-        loadCart();
+
+        function removeItem(id) {
+            let cart = JSON.parse(localStorage.getItem('bookstoreCart') || '{}');
+            delete cart[id];
+            localStorage.setItem('bookstoreCart', JSON.stringify(cart));
+            loadCart();
+        }
+
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('bookstoreCart') || '{}');
+            const totalCount = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('cartCount');
+            if (badge) badge.innerText = totalCount;
+        }
+
+        window.onload = loadCart;
     </script>
 </body>
 </html>
