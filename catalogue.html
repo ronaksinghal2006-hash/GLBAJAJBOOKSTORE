@@ -18,14 +18,21 @@
         .nav-links a:hover { color: #fb923c; }
         .nav-links a.active { background-color: #0b3832; padding: 6px 14px; border-radius: 20px; }
         .cart-badge { background-color: #f97316; color: white; padding: 2px 7px; border-radius: 10px; font-size: 12px; margin-left: 4px; font-weight: bold; }
+        
         .main-wrapper { display: flex; flex: 1; padding: 30px 40px; gap: 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
+        .sidebar { width: 260px; background: #ffffff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); height: fit-content; border: 1px solid #cbd5e1; }
+        .sidebar h3 { font-size: 16px; color: #0f3d38; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #f97316; font-weight: bold; }
+        .branch-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 15px; margin-bottom: 8px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; text-decoration: none; color: #0f172a; font-weight: 700; font-size: 14px; }
+        .branch-btn:hover, .branch-btn.active { background: #e2e8f0; border-color: #0f3d38; }
+
         .content-area { flex: 1; background: #ffffff; border-radius: 16px; padding: 35px; border: 1px solid #cbd5e1; }
         .filter-controls { display: flex; gap: 12px; margin-bottom: 25px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
         .filter-controls input, .filter-controls select { padding: 11px 15px; border: 1px solid #94a3b8; border-radius: 8px; font-size: 14px; }
         .filter-controls input { flex: 1; min-width: 250px; }
+
         .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
         .book-card { border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; background: #ffffff; display: flex; flex-direction: column; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-        .book-img-box { background: #f8fafc; height: 160px; display: flex; justify-content: center; align-items: center; border-bottom: 1px solid #cbd5e1; overflow: hidden; }
+        .book-img-box { background: #f1f5f9; height: 160px; display: flex; justify-content: center; align-items: center; overflow: hidden; border-bottom: 1px solid #e2e8f0; }
         .book-img-box img { width: 100%; height: 100%; object-fit: cover; }
         .book-info { padding: 15px; display: flex; flex-direction: column; flex: 1; }
         .book-title { font-size: 15px; font-weight: bold; color: #0f172a; margin-bottom: 4px; }
@@ -34,6 +41,7 @@
         .book-price { font-size: 16.5px; font-weight: bold; color: #0f3d38; }
         .btn-add { background-color: #f97316; color: white; border: none; padding: 6px 14px; font-weight: bold; border-radius: 6px; cursor: pointer; }
         .btn-add:hover { background-color: #ea580c; }
+
         .footer { background-color: #114b43; color: #ffffff; text-align: center; padding: 20px; font-size: 13.5px; margin-top: auto; font-weight: 500; }
         .footer p { margin: 4px 0; }
         .footer a { color: #fb923c; text-decoration: none; font-weight: bold; }
@@ -54,12 +62,23 @@
             <a href="cart.html">Cart <span class="cart-badge" id="cartCount">0</span></a>
         </nav>
     </header>
+
     <div class="main-wrapper">
+        <aside class="sidebar">
+            <h3>Shop by Branch</h3>
+            <a href="catalogue.html?branch=all" class="branch-btn" id="btn-all">📚 All Books</a>
+            <a href="catalogue.html?branch=cse" class="branch-btn" id="btn-cse">💻 CSE</a>
+            <a href="catalogue.html?branch=ece" class="branch-btn" id="btn-ece">🔬 ECE</a>
+            <a href="catalogue.html?branch=eee" class="branch-btn" id="btn-eee">⚡ EEE</a>
+            <a href="catalogue.html?branch=civil" class="branch-btn" id="btn-civil">🏗️ CIVIL</a>
+        </aside>
+
         <main class="content-area">
-            <h2>All Books Catalogue</h2>
+            <h2 id="pageTitle">All Books Catalogue</h2>
+            <br>
             <div class="filter-controls">
                 <input type="text" id="searchInput" placeholder="Search by title or author..." onkeyup="filterBooks()">
-                <select id="branchFilter" onchange="filterBooks()">
+                <select id="branchFilter" onchange="applyDropdownFilter()">
                     <option value="all">All Branches</option>
                     <option value="cse">CSE</option>
                     <option value="ece">ECE</option>
@@ -70,6 +89,7 @@
             <div class="books-grid" id="booksGrid"></div>
         </main>
     </div>
+
     <footer class="footer">
         <p>GL BAJAJ INSTITUTE OF TECHNOLOGY AND MANAGEMENT</p>
         <p>Name: Ronak | Roll No: 2501920110313</p>
@@ -78,7 +98,10 @@
 
     <script src="branch-catalogue.js"></script>
     <script>
-        function displayAllBooks(branchFilter = 'all', searchQuery = '') {
+        const urlParams = new URLSearchParams(window.location.search);
+        let currentBranch = urlParams.get('branch') || 'all';
+
+        function displayBooks(branchFilter = 'all', searchQuery = '') {
             const grid = document.getElementById('booksGrid');
             if (!grid) return;
             grid.innerHTML = '';
@@ -103,7 +126,7 @@
             grid.innerHTML = filteredBooks.map(book => `
                 <div class="book-card">
                     <div class="book-img-box">
-                        <img src="${book.image}" alt="${book.name}" onerror="this.src='images/logo.png'">
+                        <img src="${book.image}" alt="${book.name}">
                     </div>
                     <div class="book-info">
                         <div class="book-title">${book.name}</div>
@@ -119,28 +142,26 @@
 
         function filterBooks() {
             const search = document.getElementById('searchInput').value;
-            const branch = document.getElementById('branchFilter').value;
-            displayAllBooks(branch, search);
+            displayBooks(currentBranch, search);
+        }
+
+        function applyDropdownFilter() {
+            currentBranch = document.getElementById('branchFilter').value;
+            highlightActiveBranch();
+            filterBooks();
+        }
+
+        function highlightActiveBranch() {
+            document.querySelectorAll('.branch-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`btn-${currentBranch}`);
+            if (activeBtn) activeBtn.classList.add('active');
+            document.getElementById('branchFilter').value = currentBranch;
+            document.getElementById('pageTitle').innerText = currentBranch === 'all' ? 'All Books Catalogue' : `${currentBranch.toUpperCase()} Books`;
         }
 
         window.onload = () => {
-            displayAllBooks();
-            updateCartCount();
-        };
-
-        function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem('bookstoreCart') || '{}');
-            const totalCount = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
-            const badge = document.getElementById('cartCount');
-            if (badge) badge.innerText = totalCount;
-        }
-
-        const originalAddToCart = window.addToCart;
-        window.addToCart = function(id, name, price) {
-            if (typeof originalAddToCart === 'function') {
-                originalAddToCart(id, name, price);
-            }
-            updateCartCount();
+            highlightActiveBranch();
+            displayBooks(currentBranch);
         };
     </script>
 </body>
