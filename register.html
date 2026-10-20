@@ -17,7 +17,15 @@
         .nav-links a { color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; }
         .nav-links a:hover { color: #fb923c; }
         .nav-links a.active { background-color: #0b3832; padding: 6px 14px; border-radius: 20px; }
-        .main-wrapper { display: flex; flex: 1; justify-content: center; align-items: center; padding: 40px; }
+        .cart-badge { background-color: #f97316; color: white; padding: 2px 7px; border-radius: 10px; font-size: 12px; margin-left: 4px; font-weight: bold; }
+
+        .main-wrapper { display: flex; flex: 1; padding: 30px 40px; gap: 30px; max-width: 1400px; margin: 0 auto; width: 100%; justify-content: center; align-items: center; }
+        .sidebar { width: 260px; background: #ffffff; border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); height: fit-content; border: 1px solid #cbd5e1; }
+        .sidebar h3 { font-size: 16px; color: #0f3d38; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #f97316; font-weight: bold; }
+        .branch-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 15px; margin-bottom: 8px; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 10px; text-decoration: none; color: #0f172a; font-weight: 700; font-size: 14px; }
+        .branch-btn:hover { background: #e2e8f0; border-color: #0f3d38; }
+
+        .content-area { flex: 1; display: flex; justify-content: center; align-items: center; }
         .form-card { background: white; padding: 40px; border-radius: 16px; border: 1px solid #cbd5e1; width: 100%; max-width: 420px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
         .form-card h2 { color: #0f3d38; margin-bottom: 20px; text-align: center; }
         .input-group { margin-bottom: 15px; }
@@ -25,6 +33,7 @@
         .input-group input { width: 100%; padding: 10px 15px; border: 1px solid #94a3b8; border-radius: 8px; font-size: 14px; }
         .btn-submit { width: 100%; background-color: #f97316; color: white; border: none; padding: 12px; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 15px; margin-top: 10px; }
         .btn-submit:hover { background-color: #ea580c; }
+
         .footer { background-color: #114b43; color: #ffffff; text-align: center; padding: 20px; font-size: 13.5px; margin-top: auto; font-weight: 500; }
         .footer p { margin: 4px 0; }
         .footer a { color: #fb923c; text-decoration: none; font-weight: bold; }
@@ -42,37 +51,60 @@
             <a href="login.html">Login</a>
             <a href="register.html" class="active">Register</a>
             <a href="catalogue.html">Catalogue</a>
-            <a href="cart.html">Cart</a>
+            <a href="cart.html">Cart <span class="cart-badge" id="cartCount">0</span></a>
         </nav>
     </header>
+
     <div class="main-wrapper">
-        <div class="form-card">
-            <h2>Student Registration</h2>
-            <form onsubmit="event.preventDefault(); alert('Registration successful!');">
-                <div class="input-group">
-                    <label>Full Name</label>
-                    <input type="text" placeholder="Enter your name" required>
-                </div>
-                <div class="input-group">
-                    <label>Roll Number</label>
-                    <input type="text" placeholder="e.g., 2501920110313" required>
-                </div>
-                <div class="input-group">
-                    <label>Email Address</label>
-                    <input type="email" placeholder="Enter email" required>
-                </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" placeholder="Create password" required>
-                </div>
-                <button type="submit" class="btn-submit">Register</button>
-            </form>
-        </div>
+        <aside class="sidebar">
+            <h3>Shop by Branch</h3>
+            <a href="catalogue.html?branch=all" class="branch-btn">📚 All Books</a>
+            <a href="catalogue.html?branch=cse" class="branch-btn">💻 CSE</a>
+            <a href="catalogue.html?branch=ece" class="branch-btn">🔬 ECE</a>
+            <a href="catalogue.html?branch=eee" class="branch-btn">⚡ EEE</a>
+            <a href="catalogue.html?branch=civil" class="branch-btn">🏗️ CIVIL</a>
+        </aside>
+
+        <main class="content-area">
+            <div class="form-card">
+                <h2>Student Registration</h2>
+                <form onsubmit="event.preventDefault(); alert('Registration successful!');">
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" placeholder="Enter your name" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Roll Number</label>
+                        <input type="text" placeholder="e.g., 2501920110313" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" placeholder="Enter email" required>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" placeholder="Create password" required>
+                    </div>
+                    <button type="submit" class="btn-submit">Register</button>
+                </form>
+            </div>
+        </main>
     </div>
+
     <footer class="footer">
         <p>GL BAJAJ INSTITUTE OF TECHNOLOGY AND MANAGEMENT</p>
         <p>Name: Ronak | Roll No: 2501920110313</p>
-        <p>GitHub: <a href="https://github.com/ronaksinghal2006-hash/GLBAJAJBOOKSTORE" target="_blank">github.com/ronaksinghal2006-hash</a></p>
+        <p>GitHub: <a href="https://github.com/ronaksinghal2006-hash" target="_blank">github.com/ronaksinghal2006-hash/GLBAJAJBOOKSTORE</a></p>
     </footer>
+
+    <script>
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('bookstoreCart') || '{}');
+            const totalCount = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+            const badge = document.getElementById('cartCount');
+            if (badge) badge.innerText = totalCount;
+        }
+        window.onload = updateCartCount;
+    </script>
 </body>
 </html>
