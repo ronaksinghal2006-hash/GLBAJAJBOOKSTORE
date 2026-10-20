@@ -16,18 +16,17 @@
         .nav-links { display: flex; align-items: center; gap: 25px; }
         .nav-links a { color: #ffffff; text-decoration: none; font-size: 15px; font-weight: 600; }
         .nav-links a:hover { color: #fb923c; }
+        .nav-links a.active { background-color: #0b3832; padding: 6px 14px; border-radius: 20px; }
         .main-wrapper { display: flex; flex: 1; padding: 30px 40px; gap: 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
         .content-area { flex: 1; background: #ffffff; border-radius: 16px; padding: 35px; border: 1px solid #cbd5e1; }
-        .filter-controls { display: flex; gap: 12px; margin-bottom: 25px; }
-        .filter-controls input { flex: 1; padding: 11px 15px; border: 1px solid #94a3b8; border-radius: 8px; }
-        .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-        .book-card { border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; background: #ffffff; display: flex; flex-direction: column; }
-        .book-img-box { background: #ccfbf1; height: 130px; display: flex; justify-content: center; align-items: center; font-size: 40px; }
-        .book-info { padding: 15px; display: flex; flex-direction: column; flex: 1; }
-        .book-title { font-size: 15px; font-weight: bold; color: #0f172a; margin-bottom: 4px; }
-        .book-price { font-size: 16.5px; font-weight: bold; color: #0f3d38; }
-        .btn-add { background-color: #f97316; color: white; border: none; padding: 6px 14px; font-weight: bold; border-radius: 6px; cursor: pointer; }
-        .footer { background-color: #114b43; color: #ffffff; text-align: center; padding: 20px; font-size: 13.5px; margin-top: auto; }
+        .filter-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .filter-controls select { padding: 10px 15px; border: 1px solid #94a3b8; border-radius: 8px; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; background: white; margin-top: 10px; }
+        th, td { border: 1px solid #cbd5e1; padding: 12px; text-align: center; }
+        th { background-color: #e2e8f0; color: #0f172a; }
+        .cart-btn { background-color: #f97316; color: white; border: none; padding: 8px 14px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+        .cart-btn:hover { background-color: #ea580c; }
+        .footer { background-color: #114b43; color: #ffffff; text-align: center; padding: 20px; font-size: 13.5px; margin-top: auto; font-weight: 500; }
         .footer p { margin: 4px 0; }
         .footer a { color: #fb923c; text-decoration: none; font-weight: bold; }
     </style>
@@ -51,9 +50,29 @@
         <main class="content-area">
             <h2>All Books Catalogue</h2>
             <div class="filter-controls">
-                <input type="text" id="searchInput" placeholder="Search by title or author...">
+                <label>Filter by Branch: 
+                    <select id="branchFilter">
+                        <option value="all">All Books</option>
+                        <option value="cse">CSE</option>
+                        <option value="ece">ECE</option>
+                        <option value="eee">EEE</option>
+                        <option value="civil">Civil</option>
+                    </select>
+                </label>
+                <a href="cart.html" style="color: #0f3d38; font-weight: bold; text-decoration: none;">View Cart 🛒</a>
             </div>
-            <div class="books-grid" id="booksGrid"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Book Name</th>
+                        <th>Author</th>
+                        <th>Branch</th>
+                        <th>Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="bookRows"></tbody>
+            </table>
         </main>
     </div>
     <footer class="footer">
@@ -61,5 +80,43 @@
         <p>Name: Ronak | Roll No: 2501920110313</p>
         <p>GitHub: <a href="https://github.com/ronaksinghal2006-hash/GLBAJAJBOOKSTORE" target="_blank">github.com/ronaksinghal2006-hash/GLBAJAJBOOKSTORE</a></p>
     </footer>
+
+    <script src="branch-catalogue.js"></script>
+    <script>
+        function renderCatalogue(filter) {
+            const tbody = document.getElementById("bookRows");
+            tbody.innerHTML = "";
+            
+            let allBooksList = [];
+            
+            if (typeof branchBooksData !== 'undefined') {
+                Object.keys(branchBooksData).forEach(branchKey => {
+                    if (filter === "all" || filter === branchKey) {
+                        branchBooksData[branchKey].forEach(b => {
+                            allBooksList.push({ ...b, branchName: branchKey.toUpperCase() });
+                        });
+                    }
+                });
+            }
+
+            allBooksList.forEach(book => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td><b>${book.name}</b></td>
+                    <td>${book.author}</td>
+                    <td>${book.branchName}</td>
+                    <td>₹${book.price}</td>
+                    <td><button class="cart-btn" onclick="addToCart('${book.id}', '${book.name}', ${book.price})">Add to Cart</button></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        document.getElementById("branchFilter").addEventListener("change", function() {
+            renderCatalogue(this.value);
+        });
+
+        renderCatalogue("all");
+    </script>
 </body>
 </html>
